@@ -18,23 +18,28 @@ if not GOOGLE_API_KEY:
 llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash-exp", temperature=0.7)
 
 # Define a PromptTemplate to generate responses
-prompt_template = PromptTemplate(
-    input_variables=["text"],
-    template="""
-    You are an expert English-to-Urdu language assistant. Provide a JSON response strictly in this format:
-    ```json
-    {{
-        "translation": "Accurate Urdu translation of '{text}'",
-        "pronunciation": "Romanized English pronunciation of the translated text",
-        "definition": "Definition and Urdu meaning if input is a single word or short phrase",
-        "vocabulary": "Breakdown of key words and their usage",
-        "grammar": "Grammar and sentence structure analysis",
-        "corrections": "Suggested grammar and vocabulary improvements"
-    }}
-    ```
-    Ensure the response is **valid JSON format**. Only return the JSON and nothing else.
-    """
+# Define the prompt template for translation
+translation_prompt = PromptTemplate(
+    input_variables=["english_text"],
+    template="Translate the following English text into Urdu only: '{english_text}'. Do not provide any additional information, only the translation.",
 )
+
+# Define the prompt template for pronunciation
+pronunciation_prompt = PromptTemplate(
+    input_variables=["english_text"],
+    template="Provide the pronunciation of the following English text in English: '{english_text}'. Do not provide any additional information, only the pronunciation.",
+)
+
+# Define the prompt template for vocabulary/grammar check
+vocab_grammar_prompt = PromptTemplate(
+    input_variables=["english_text"],
+    template="Analyze the following English text for vocabulary, grammar, synonyms, and antonyms: '{english_text}'. Provide the results in English only. Do not translate anything into Urdu.",
+)
+
+# Create LangChains for each task
+translation_chain = LLMChain(llm=llm, prompt=translation_prompt, verbose=True)
+pronunciation_chain = LLMChain(llm=llm, prompt=pronunciation_prompt, verbose=True)
+vocab_grammar_chain = LLMChain(llm=llm, prompt=vocab_grammar_prompt, verbose=True)
 
 # Create LangChain
 translation_chain = LLMChain(llm=llm, prompt=prompt_template)
