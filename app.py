@@ -2,7 +2,7 @@ import os
 import time
 import streamlit as st
 from dotenv import load_dotenv
-from gtts import gTTS
+from gtts import gTTS  # type: ignore[import-untyped]
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -26,7 +26,7 @@ if "last_request_time" not in st.session_state:
 RATE_LIMIT_SECONDS = 2
 
 # Initialize LLM model (ensure model name is valid)
-llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash-exp", temperature=0.7)
+llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.7)
 prompt_template = PromptTemplate(
     input_variables=["text"],
     template="""
