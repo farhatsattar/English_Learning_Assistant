@@ -1,4 +1,5 @@
 import os
+import time
 import streamlit as st
 from dotenv import load_dotenv
 from gtts import gTTS
@@ -15,10 +16,17 @@ if not GOOGLE_API_KEY:
     st.error("🚨 GOOGLE_API_KEY is missing! Please check your .env file.")
     st.stop()
 
+# Initialize session state for caching and rate limiting
+if "response_cache" not in st.session_state:
+    st.session_state.response_cache = {}
+if "last_request_time" not in st.session_state:
+    st.session_state.last_request_time = 0
+
+# Rate limiting: minimum 2 seconds between requests
+RATE_LIMIT_SECONDS = 2
+
 # Initialize LLM model (ensure model name is valid)
 llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash-exp", temperature=0.7)
-
-# Define prompt template
 prompt_template = PromptTemplate(
     input_variables=["text"],
     template="""
