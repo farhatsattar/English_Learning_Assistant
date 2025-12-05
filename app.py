@@ -27,7 +27,7 @@ if "last_request_time" not in st.session_state:
 RATE_LIMIT_SECONDS = 2
 
 # Initialize LLM model (ensure model name is valid)
-llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0.7,api_key=GOOGLE_API_KEY)  # Ensure to set the API key in the environment or configuration
+llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.7,api_key=GOOGLE_API_KEY)  # Ensure to set the API key in the environment or configuration
 prompt_template = PromptTemplate(
     input_variables=["text"],
     template="""
