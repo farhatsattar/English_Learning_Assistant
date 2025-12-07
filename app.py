@@ -10,7 +10,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 # Load environment variables
 load_dotenv()
 GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
-# GOOGLE_API_KEY = st.secrets.get("GOOGLE_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+
 
 # Ensure API key is available
 if not GOOGLE_API_KEY:
